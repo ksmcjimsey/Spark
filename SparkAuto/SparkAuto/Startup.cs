@@ -32,7 +32,10 @@ namespace SparkAuto
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddRazorPages();
+
+            // added nuget package Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation
+            // Then added .AddRazorRuntimeCompilation() to the end of this service entry.
+            services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
