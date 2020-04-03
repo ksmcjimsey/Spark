@@ -12,6 +12,7 @@ using SparkAuto.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace SparkAuto
 {
@@ -27,15 +28,32 @@ namespace SparkAuto
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // We added this so the user gets to choose the cookies or not.
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent, for non-essential 
+                // cookies, is needed to use cookies.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            // Auto added due to EF selected at startup
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+
+            // Default identity - user account, login, and register
+            // If we ever see .AddDefaultUI(UIFramework.Bootstrap4) we can remove as
+            // it is built in and will give an error in core 3.1 and later.
+            services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // added nuget package Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation
             // Then added .AddRazorRuntimeCompilation() to the end of this service entry.
             services.AddRazorPages().AddRazorRuntimeCompilation();
+
+            // No longer needed in core 3 due to endpoints.MapRazorPages() being added
+            //services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,10 +79,14 @@ namespace SparkAuto
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // This is new for core 3 and later
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
             });
+
+            // No longer needed because of UserEndpoints MapRazorPages
+            // app.UseMvc();
         }
     }
 }
