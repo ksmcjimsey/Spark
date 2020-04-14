@@ -1,0 +1,76 @@
+﻿@page
+@model SparkAuto.Pages.ServiceTypes.IndexModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+
+<div class="border background-white">
+    <div class="row">
+        @* container is done in the _Layout.cshtml *@
+        <div class="col-6">
+            <h2 class="text-info">Service Type List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-page="Create" class="btn btn-info">
+                @* Could use a button tag here but anchor is better for page redirection *@
+                <i class="fas fa-plus"></i>&nbsp;Create New
+            </a>
+        </div>
+    </div>
+
+    <br />
+
+    <div>
+        @*  With the @ we can use regular c# code
+            The "Model" is the default for the object behind the page.
+            Since we created a public "ServiceType" list in the class we
+            can access its data here. *@
+        @if (Model.ServiceType.Count == 0)
+        {
+            <p class="text-danger">No Service Type exists. Please create a new service type. </p>
+        }
+
+        else
+        {
+            <table class="table table-striped border">
+                <tr class="table-secondary">
+                    <th>
+                        @*  using C# library to fill in html
+                            We are getting the name property of the first item
+                            I think we could use any row but we know at least
+                            row 0 exists. *@
+                        @Html.DisplayNameFor(m => m.ServiceType[0].Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ServiceType[0].Price)
+                    </th>
+                    @*  Empty <th> is for the column where the buttons will be.
+                        No label for this column. *@
+                    <th></th>
+                </tr>
+
+                @* Now we must loop through the list and display it in a table. *@
+                @foreach (var item in Model.ServiceType)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.Price)
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+
+            </table>
+        }
+    </div>
+
+</div>
+
+
