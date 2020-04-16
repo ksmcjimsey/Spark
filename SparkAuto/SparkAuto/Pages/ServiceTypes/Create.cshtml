@@ -9,3 +9,50 @@
 
 <h2 class="text-info">Create Service Type</h2>
 
+<br />
+
+<form method="post">
+    <div class="border background-white">
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="ServiceType.Name"></label>
+            </div>
+            <div class="col-5">
+                @* Form control will occupy the full div area *@
+                <input asp-for="ServiceType.Name" class="form-control" />
+            </div>
+            <span asp-validation-for="ServiceType.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="ServiceType.Price"></label>
+            </div>
+            <div class="col-5">
+                @* Form control will occupy the full div area *@
+                <input asp-for="ServiceType.Price" class="form-control" />
+            </div>
+            @* Uses the built in validation scripts added at the bottom of the page*@
+            <span asp-validation-for="ServiceType.Price" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            @* Offset will push over 2 columns and have width of 5 columns after the offset *@
+            <div class="col-5 offset-2">
+                <div class="row">
+                    @* Our 5 colums is now split into 12 more columns *@
+                    <div class="col-6">
+                        @* Value states to go back to the Create index page *@
+                        <input type="submit" class="btn btn-info form-control" value="Create"/>
+                    </div>
+                    <div class="col-6">
+                        <a asp-page="Index" class="btn btn-success form-control">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@* Calls the validation JS script *@
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

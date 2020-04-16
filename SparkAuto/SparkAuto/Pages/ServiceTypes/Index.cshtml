@@ -63,7 +63,14 @@
                         <td>
                             @Html.DisplayFor(m => item.Price)
                         </td>
-                        <td></td>
+                        <td style="width:150px;">
+                            <div class="btn-group" role="group">
+                                @* Passes the Id for that row in the DB *@
+                                <a class="btn btn-primary text-white" asp-page="Edit" asp-route-Id="@item.Id">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </div>
+                        </td>
                     </tr>
                 }
 
