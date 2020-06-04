@@ -37,16 +37,7 @@
         <div class="form-group row">
             @* Offset will push over 2 columns and have width of 5 columns after the offset *@
             <div class="col-5 offset-2">
-                <div class="row">
-                    @* Our 5 colums is now split into 12 more columns *@
-                    <div class="col-6">
-                        @* Value states to go back to the Create index page *@
-                        <input type="submit" class="btn btn-info form-control" value="Create"/>
-                    </div>
-                    <div class="col-6">
-                        <a asp-page="Index" class="btn btn-success form-control">Back to List</a>
-                    </div>
-                </div>
+                <partial name="_CreateAndBackToListButtons" />
             </div>
         </div>
     </div>

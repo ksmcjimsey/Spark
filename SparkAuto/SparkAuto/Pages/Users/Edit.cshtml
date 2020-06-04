@@ -1,0 +1,110 @@
+﻿@page
+@model SparkAuto.Pages.Users.EditModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-info pt-2 pb-3">Edit User Account</h2>
+
+
+<div class="row background-white border">
+    <div class="col-md-8">
+        <form method="post">
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <!-- Try adding ID to fix saving issue -->
+            <input type="hidden" asp-for="ApplicationUser.Id" />
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-4">
+                        <label asp-for="ApplicationUser.Name"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="ApplicationUser.Name" class="form-control" />
+                    </div>
+                    <span asp-validation-for="ApplicationUser.Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-4">
+                        <label asp-for="ApplicationUser.Email"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="ApplicationUser.Email" class="form-control" disabled />
+                    </div>
+                    <!-- Email is not included maybe because it is disabled -->
+                    <input type="hidden" asp-for="ApplicationUser.Email" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-4">
+                        <label asp-for="ApplicationUser.PhoneNumber"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="ApplicationUser.PhoneNumber" class="form-control" />
+                    </div>
+                    <span asp-validation-for="ApplicationUser.PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-4">
+                        <label asp-for="ApplicationUser.Address"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="ApplicationUser.Address" class="form-control" />
+                    </div>
+                    <span asp-validation-for="ApplicationUser.Address" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-4">
+                        <label asp-for="ApplicationUser.City"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="ApplicationUser.City" class="form-control" />
+                    </div>
+                    <span asp-validation-for="ApplicationUser.Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-4">
+                        <label asp-for="ApplicationUser.PostalCode"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="ApplicationUser.PostalCode" class="form-control" />
+                    </div>
+                    <span asp-validation-for="ApplicationUser.PostalCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @* Offset will push over 2 columns and have width of 5 columns after the offset *@
+                <div class="col-5 offset-2">
+                    <partial name="_EditAndBackToListButtons" />
+                </div>
+            </div>
+
+        </form>
+
+    </div>  @* column 8 medium*@
+
+</div>  @* end of Row *@
+
+
+@* Scripts *@
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,156 @@
+﻿@* We made change to the model so we need to update how we read data from this model. *@
+@page
+@model SparkAuto.Pages.Users.IndexModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+    @* Only allow get so the form button does not submit a post
+       Redirect submissions to the same form *@
+    <form method="get" asp-page="Index">
+
+        @* Button to go to create user page *@
+        <div class="row mt-3">
+            @* container is done in the _Layout.cshtml *@
+            <div class="col-6">
+                <h2 class="text-info">Customer Type List</h2>
+            </div>
+            <div class="col-6 text-right">
+                @* Navigating to account creation: use asp-area to get to Identity and asp-page to 
+                     get to account/register *@
+                <a asp-page="/Account/Register" asp-area="Identity" class="btn btn-info">
+                    @* Could use a button tag here but anchor is better for page redirection *@
+                    <i class="fas fa-plus"></i>&nbsp;Create New Customer
+                </a>
+            </div>
+        </div>
+
+        @* *@
+        <div class="border background-white mt-3">
+
+            @* Add a search that will show the records for the items searched. *@
+            <div style="height: 60px;" class="container border border-secindary">
+                <div class="row">
+                    
+                    <div class="col-11">
+                        <div class="row" style="padding-top: 10px">
+                            <div class="col-4">
+                                @Html.Editor("searchEmail", new { htmlAttributes = new { @class = "form-control", placeholder = "Email..." } })
+                            </div>
+                            <div class="col-4">
+                                @Html.Editor("searchName", new { htmlAttributes = new { @class = "form-control", placeholder = "Name..." } })
+                            </div>
+                            <div class="col-4">
+                                @Html.Editor("searchPhone", new { htmlAttributes = new { @class = "form-control", placeholder = "Phone..." } })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-1">
+                        <div class="row" style="padding-top:10px" padding-right: 15px;>
+                            @* Restricted at the form level from posting the form. *@
+                            <button type="submit" name="submit" value="search" class="btn btn-info form-control">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            @* Table *@
+            <div>
+
+                <table class="table table-striped border mt-1">
+
+                    <tr class="table-secondary">
+                        <th>
+                            @*  using C# library to fill in html
+                                We are getting the name property of the first item
+                                I think we could use any row but we know at least
+                                row 0 exists.
+                                Updates these to include the new object that holds the list
+                                called UserListVM. *@
+                            @Html.DisplayNameFor(m => m.UserListVM.ApplicationUserList[0].Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.UserListVM.ApplicationUserList[0].PhoneNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.UserListVM.ApplicationUserList[0].Email)
+                        </th>
+                        @*  Empty <th> is for the column where the buttons will be.
+                            No label for this column. *@
+                        <th></th>
+
+                        <th></th>
+                    </tr>
+
+                    @* Loop through the application user table and show each user
+                        The paginatin code will lime the ApplicationUser List to only
+                        the set of records we are looking at.*@
+                    @foreach (var item in Model.UserListVM.ApplicationUserList)
+                    {
+                <tr>
+                    @* Each row *@
+                    <td>
+                        @Html.DisplayFor(m => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Email)
+                    </td>
+
+                    <td>
+                        @* The asp-route-userId passes the key value userId with the users ID
+                           User Id is availble because we looped through each use
+                           object *@
+                        <a asp-page="../cars/Index" asp-route-userId="@item.Id" style="text-decoration:none;">
+                            <img src="~/images/car.png" width="40" /> &nbsp; View Cars
+                        </a>
+                    </td>
+
+                    @* Edit and delete buttons for each row *@
+                    <td style="width:150px;">
+                        <div class="btn-group" role="group">
+
+                            @* Passes the Id for that row in the DB. Search font awesome for edit *@
+                            <a class="btn btn-primary text-white" asp-page="Edit" asp-route-Email="@item.Email">
+                                <i class="fas fa-edit"></i>
+                            </a>
+
+                            @* Font awesome trash icon*@
+                            <a class="btn btn-danger text-white" asp-page="Delete" asp-route-Id="@item.Id">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+
+                        </div>
+                    </td>
+
+                </tr>
+
+                    }   @* End of table loop *@
+
+                    <tr>
+                        @* colspan="5" will take the space of 5 columns / fields. *@
+                        <td colspan="5" class="text-right">
+                            @* All tag helpers must be added to the Users/_ViewImpors.cshtml file
+                               Set our new tag helper to the data we set up in the code behind class. 
+                               Redirect back to this page using asp-action  *@
+                            <div page-model="@Model.UserListVM.PagingInfo" asp-action="Index" page-class="btn border"
+                                 page-class-normal="btn btn-light" page-class-selected="btn btn-info active" class="btn-group">
+
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+    </form>
+

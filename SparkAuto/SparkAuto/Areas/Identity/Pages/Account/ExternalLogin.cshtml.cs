@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using SparkAuto.Data;
+using SparkAuto.Models;
+using SparkAuto.Utility;
 
 namespace SparkAuto.Areas.Identity.Pages.Account
 {
@@ -24,17 +27,33 @@ namespace SparkAuto.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
 
+        // We add these fields - Get the role used and access to db
+        private readonly RoleManager<IdentityRole> _roleManager;    // Needs to be added to the pipeline like EF.
+        //private readonly ApplicationDbContext _db;
+
+
+        // Constructor
         public ExternalLoginModel(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+
+            // We had to add our new fields above to the constructor
+            RoleManager<IdentityRole> roleManager
+            //ApplicationDbContext db
+            )
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
             _emailSender = emailSender;
+
+            // New passed in values need to be assigned to our fields we created above.
+            //_db = db;
+            _roleManager = roleManager;
         }
+
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -50,13 +69,25 @@ namespace SparkAuto.Areas.Identity.Pages.Account
         {
             [Required]
             [EmailAddress]
+            [Display(Name = "Email")]
             public string Email { get; set; }
+
+            [Required]
+            public String Name { get; set; }
+            public String Address { get; set; }
+            public String City { get; set; }
+            public String PostalCode { get; set; }
+
+            [Required]
+            public String PhoneNumber { get; set; }
         }
+
 
         public IActionResult OnGetAsync()
         {
             return RedirectToPage("./Login");
         }
+
 
         public IActionResult OnPost(string provider, string returnUrl = null)
         {
@@ -97,17 +128,23 @@ namespace SparkAuto.Areas.Identity.Pages.Account
                 // If the user does not have an account, then ask the user to create an account.
                 ReturnUrl = returnUrl;
                 LoginProvider = info.LoginProvider;
+
+                // Get the values from the facebook account
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
                     Input = new InputModel
                     {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                        Name = info.Principal.FindFirstValue(ClaimTypes.Name)
                     };
                 }
                 return Page();
             }
         }
 
+
+        // This is called once the user registers using the facebook button and external login
+        // form.
         public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -121,11 +158,29 @@ namespace SparkAuto.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                // Edit this line to use applicationuser
+                //var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser 
+                {
+                    UserName = Input.Email, 
+                    Email = Input.Email,
+                    Name = Input.Name,
+                    Address = Input.Address,
+                    City = Input.City,
+                    PostalCode = Input.PostalCode,
+                    PhoneNumber = Input.PhoneNumber
+                };
                 var result = await _userManager.CreateAsync(user);
+
+                // if the new user add is successfull continue on
                 if (result.Succeeded)
                 {
+                    // If added using facebook or google then they will be a customer
+                    // end user.
+                    await _userManager.AddToRoleAsync(user, SD.CustomerEndUser);
+
                     result = await _userManager.AddLoginAsync(user, info);
+
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);

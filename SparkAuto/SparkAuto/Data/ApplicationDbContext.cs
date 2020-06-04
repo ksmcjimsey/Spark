@@ -14,6 +14,10 @@ namespace SparkAuto.Data
         {
         }
 
+        // Don't forget to add migration and update database from the
+        // Package Manager Console
         public DbSet<ServiceType> ServcieType { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<Car> Car { get; set; }
     }
 }

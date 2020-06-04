@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using SparkAuto.Email;
 
 namespace SparkAuto
 {
@@ -37,6 +39,8 @@ namespace SparkAuto
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //services.AddScoped<IDbInitializer, DbInitializer>();
+
             // Auto added due to EF selected at startup
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -45,8 +49,29 @@ namespace SparkAuto
             // Default identity - user account, login, and register
             // If we ever see .AddDefaultUI(UIFramework.Bootstrap4) we can remove as
             // it is built in and will give an error in core 3.1 and later.
-            services.AddDefaultIdentity<IdentityUser>()
+            // Changed AddDefaultIdentity to AddIdentity for core 3.1
+            //services.AddDefaultIdentity<IdentityUser>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddDefaultTokenProviders()     // Added this line as part of core 3.1 for roles and identity
+                .AddDefaultUI()     // *** This line is from the internet to fix an error I could not find in the course
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // Facebook login - created and app on facebook develoeprs and then got the App ID
+            // Needed to install Microsoft.AspNetCore.Authentication.Facebook in NuGet
+            // https://developers.facebook.com/apps/177852273566738/settings/basic/
+            // Also need to enable the Facebook login: Dashboard --> Quickstart --> add URL
+            // Also needs a "Valid OAuth Redirect URIs in the Dashboard --> PRODUCTS --> Settings section
+            services.AddAuthentication().AddFacebook(fb =>
+            {
+                fb.AppId = "177852273566738";
+                fb.AppSecret = "4d285ee6eaf4735a21d1974abfd3db01";
+            });
+
+            // Add email - calls the contructor and passing in the sendGrid key
+            // Creates and EmailOptions object and sets its value to the key
+            // EmailOptions is injected in EmailSender class
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.Configure<EmailOptions>(Configuration);    // Grabs EmailOptions value out of appsettings.json
 
             // added nuget package Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation
             // Then added .AddRazorRuntimeCompilation() to the end of this service entry.

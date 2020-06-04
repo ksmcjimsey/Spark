@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@* Need to get access to the authoriziation class: SD.cs *@
+@using SparkAuto.Utility
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -36,14 +39,24 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />    @* Registration and login are in here. *@
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
-                        </li>
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
+                    </li>
+
+                    @* Add the authorization to the links - don't show if not authorized
+                       Don't show admin links if not an admin role user. *@
+                    @if (User.IsInRole(SD.AdminEndUser))
+                    {
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/ServiceTypes/Index">Service Types</a>
                         </li>
-                    </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Users/Index">Users</a>
+                        </li>
+                    }
+                    
+                </ul>
                 </div>
             </div>
         </nav>

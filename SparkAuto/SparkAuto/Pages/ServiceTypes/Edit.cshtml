@@ -1,0 +1,63 @@
+﻿@page
+@model SparkAuto.Pages.ServiceTypes.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<!-- Auto generated code from creating a Razor page with EF 
+     We edited it to match our other page -->
+<br />
+<h2 class="text-info">Edit Service Type</h2>
+<br />
+
+
+<form method="post">
+    <div class="border background-white">
+
+        <!-- Includes a validation error line -->
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <!-- Includes a hidden form field with the ID value -->
+        <input type="hidden" asp-for="ServiceType.Id" />
+
+        <!-- Visible part of the form -->
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="ServiceType.Name"></label>
+            </div>
+            <div class="col-5">
+                @* Form control will occupy the full div area *@
+                <input asp-for="ServiceType.Name" class="form-control" />
+            </div>
+            <span asp-validation-for="ServiceType.Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="ServiceType.Price"></label>
+            </div>
+            <div class="col-5">
+                @* Form control will occupy the full div area *@
+                <input asp-for="ServiceType.Price" class="form-control" />
+            </div>
+            @* Uses the built in validation scripts added at the bottom of the page*@
+            <span asp-validation-for="ServiceType.Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+            @* Offset will push over 2 columns and have width of 5 columns after the offset *@
+            <div class="col-5 offset-2">
+                <partial name="_EditAndBackToListButtons" />
+            </div>
+        </div>
+
+    </div>
+    
+</form>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

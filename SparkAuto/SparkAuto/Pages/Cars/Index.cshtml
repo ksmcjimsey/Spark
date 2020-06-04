@@ -1,0 +1,149 @@
+﻿@page
+@model SparkAuto.Pages.Cars.IndexModel
+@using SparkAuto.Utility    @* Needed to check the role of the user *@
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<h2 class="text-info py-2">Car Record For Customer</h2>
+
+<div class="container background-white">
+    <div class="card">
+        
+        <div class="card-header bg-dark text-light ml-0 row container">
+            <div class="col-6">
+                <i class="fas fa-car"></i>
+            </div>
+            @* Only show User List button for Admins *@
+            <div class="col-6 text-right">
+                @if(User.IsInRole(SD.AdminEndUser))
+                {
+                    @* Go to the Users index page *@
+                    <a asp-page="/Users/Index" class="btn btn-outline-info btn-sm">Back to User</a>
+                }
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row" style="padding-bottom:40px; padding-top:20px;">
+
+                <div class="col-md-3">
+                    <p>
+                        @* Go to vehicle create page *@
+                        <a asp-page="Create" asp-route-userId="@Model.CarAndCustVM.UserObj.Id"
+                           class="btn btn-info form-control">
+                            <i class="fas fa-plus"></i> &nbsp; Add New Car
+                        </a>
+                    </p>
+                </div>
+
+                <div class="col-md-6 offset-md-3">
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label asp-for="CarAndCustVM.UserObj.Name"></label>
+                        </div>
+                        <div class="col-sm-8" style="padding-bottom:5px;">
+                            <input asp-for="CarAndCustVM.UserObj.Name" disabled class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label asp-for="CarAndCustVM.UserObj.PhoneNumber"></label>
+                        </div>
+                        <div class="col-sm-8" style="padding-bottom:5px;">
+                            <input asp-for="CarAndCustVM.UserObj.PhoneNumber" disabled class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label asp-for="CarAndCustVM.UserObj.Email"></label>
+                        </div>
+                        <div class="col-sm-8" style="padding-bottom:5px;">
+                            <input asp-for="CarAndCustVM.UserObj.Email" disabled class="form-control" />
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            @* If cars exist for this user then display them else display a message *@
+            @if (Model.CarAndCustVM.Cars.Count() == 0)
+            {
+                <p class="text-danger">
+                    No Car Found! Please add a car...
+                </p>
+            }
+
+            else
+            {
+                <table class="table table-striped border">
+                    <tr class="table-secondary">
+                        <th>
+                            @Html.DisplayNameFor(m => m.CarAndCustVM.Cars.FirstOrDefault().VIN)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.CarAndCustVM.Cars.FirstOrDefault().Make)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.CarAndCustVM.Cars.FirstOrDefault().Model)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.CarAndCustVM.Cars.FirstOrDefault().Color)
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+
+                    @* Now we must loop through the list and display it in a table. *@
+                    @foreach (var item in Model.CarAndCustVM.Cars)
+                    {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => item.VIN)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Make)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Model)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Color)
+                    </td>
+                    <td></td>
+                    <td></td>
+
+                    @* Button group*@
+                    <td>
+                        <div class="btn-group" role="group">
+
+                            @* Passes the Id for that row in the DB. Search font awesome for edit *@
+                            <a class="btn btn-primary text-white" asp-page="Edit" asp-route-Id="@item.Id">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        
+                            @* Font awesome trash icon*@
+                            <a class="btn btn-danger text-white" asp-page="Delete" asp-route-Id="@item.Id">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+
+                        </div>
+                    </td>
+                </tr>
+                    }
+
+                </table>
+            }
+        </div>
+
+    </div>
+</div>
+
