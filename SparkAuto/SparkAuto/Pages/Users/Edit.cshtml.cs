@@ -47,44 +47,33 @@ namespace SparkAuto.Pages.Users
         public async Task<IActionResult> OnPostAsync()
         {
             // Check that the edit page submitted a valid model
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return Page();  // Not valid return to the page
             }
 
-            // Updated all the properties - Not sure what this does
-            _db.Attach(ApplicationUser).State = EntityState.Modified;
+            else
+            {
+                var userInDb = await _db.ApplicationUser.SingleOrDefaultAsync
+                    (u => u.Id == ApplicationUser.Id);
 
-            // Save the changes and catch any error
-            try
-            {
-                await _db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(ApplicationUser.Email)) {
+                if (userInDb == null)
+                {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                userInDb.Name = ApplicationUser.Name;
+                userInDb.PhoneNumber = ApplicationUser.PhoneNumber;
+                userInDb.Address = ApplicationUser.Address;
+                userInDb.City = ApplicationUser.City;
+                userInDb.PostalCode = ApplicationUser.PostalCode;
+
+                await _db.SaveChangesAsync();
+                return RedirectToPage("Index");
             }
 
-            // Go back to the User Index page
-            return RedirectToPage("./Index");
-
         }
-
-
-        // Helper method that returns true if the email is found in 
-        // the DB
-        private bool UserExists (string email)
-        {
-            return _db.Users.Any(e => e.Email == email);
-        }
-
-
 
     }
+
 }

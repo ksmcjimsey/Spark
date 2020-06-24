@@ -1,0 +1,99 @@
+﻿@page
+@model SparkAuto.Pages.Services.CreateModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+
+<div class="container pt-4 pb-2 row">
+
+    <div class="col-6">
+        <h2 class="text-info py-2">Create New Service</h2>
+    </div>
+    <div class="col-3 offset-3 text-right py-2">
+        <a asp-page="../Cars/Index" asp-route-userId="@Model.CarServiceVM.Car.UserId" class="btn btn-outline-success form-control">Back to List</a>
+    </div>
+</div>
+
+<div class="container background-white">
+    <div class="card">
+
+        <div class="card-header bg-dark text-light ml-0 row container">
+            <div class="col-1 text-center pt-3 text-white-50">
+                <i class="far fa-user fa-2x"></i>
+            </div>
+
+            <div class="col-5">
+                <label class="text-info">@Model.CarServiceVM.Car.ApplicationUser.Name</label><br />
+                <label class="text-info">
+                    @Model.CarServiceVM.Car.ApplicationUser.Email /
+                @Model.CarServiceVM.Car.ApplicationUser.PhoneNumber
+            </label><br />
+        </div>
+
+        <div class="col-5 text-right">
+            <label class="text-info">@Model.CarServiceVM.Car.Make @Model.CarServiceVM.Car.Model @Model.CarServiceVM.Car.Style</label><br />
+            <label class="text-info">@Model.CarServiceVM.Car.Year</label>
+        </div>
+
+        <div class="col-1 text-center pt-3 text-white-50">
+            <i class="fas fa-car fa-2x"></i>
+        </div>
+    </div>
+
+    @* When using label above we need the @Model but when using asp-for it assumes the @Model *@
+    <div class="card-body">
+        <form method="post" style="width:100%">
+            <div class="container">
+                <input type="hidden" asp-for="CarServiceVM.Car.Id" />
+                <input type="hidden" asp-for="CarServiceVM.Car.Make" />
+                <input type="hidden" asp-for="CarServiceVM.Car.Model" />
+                <input type="hidden" asp-for="CarServiceVM.Car.VIN" />
+                <input type="hidden" asp-for="CarServiceVM.Car.UserId" />
+
+                <div class="border rounded p-2">
+                    <div class="row">
+                        <div class="col-3">
+                            <h4 class="text-info pl-3 pt-2 pb-1">Add Service</h4>
+                        </div>
+                        <div class="col-9 pb-1 pt-2">
+                            <div class="row">
+                                <div class="col-8">
+                                    @* Not sure about this code ?? *@
+                                    <select asp-for="CarServiceVM.ServiceDetails.ServiceTypeId"
+                                            asp-items="@(new SelectList(Model.CarServiceVM.ServiceTypeList, "Id", "Name"))"
+                                            class="form-control">
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="submit" asp-page-handler="AddToCart" class="form-control btn btn-primary">
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="border container rounded p-2">
+                    <h3 class="text-info pb-2">Service Summary</h3
+                    @* Check if the shopping cart is empty *@
+                    @if(Model.CarServiceVM.ServiceShoppingCart.Count == 0)
+                    {
+                        <p>
+                            No service has been added yet.  Please add a servie to be performed.
+                        </p>
+                    }
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+</div>  @* Card *@
+</div>  @* Container *@
+
+

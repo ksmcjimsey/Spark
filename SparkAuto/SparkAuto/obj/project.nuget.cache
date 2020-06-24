@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "uqx6v/06zHYYnj9DyDxx/uKrQ/EouyUsnAx3tzgEHP269EgGtVViQJ+w/HyvkV6cL4MkCkAsQ1P/wrC720LN/w==",
+  "dgSpecHash": "1fTq8KTo5tOw+ftayjCFnDMWSSeTePKK3ndYmcVMdVRvOluj8dPMbYYxYGTvyVVwqfbmxNNyCZEu72dAkBFv2Q==",
   "success": true,
   "projectFilePath": "D:\\OneDrive - Johns Hopkins\\4. CHP Studies\\Udemy\\2. Master ASP.Net Core 3.1 Razor Pages\\My Projects\\Spark\\SparkAuto\\SparkAuto\\SparkAuto.csproj",
   "expectedPackageFiles": [
@@ -179,8 +179,7 @@
     "C:\\Users\\A17223\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\A17223\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\A17223\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\A17223\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
-    "C:\\Users\\A17223\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+    "C:\\Users\\A17223\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
   "logs": []
 }

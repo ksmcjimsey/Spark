@@ -98,46 +98,68 @@
                             @Html.DisplayNameFor(m => m.CarAndCustVM.Cars.FirstOrDefault().Color)
                         </th>
                         <th></th>
-                        <th></th>
-                        <th></th>
+                        @if (User.IsInRole(SD.AdminEndUser))
+                        {
+                            <th></th>
+                        }
+                            <th></th>
                     </tr>
 
                     @* Now we must loop through the list and display it in a table. *@
                     @foreach (var item in Model.CarAndCustVM.Cars)
                     {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(m => item.VIN)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => item.Make)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => item.Model)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => item.Color)
-                    </td>
-                    <td></td>
-                    <td></td>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => item.VIN)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.Make)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.Model)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.Color)
+                            </td>
+                            <td>
+                                @* Show service history for the given car.
+                                   Navigate to a page in the services folder called history 
+                                   We are iterating through a list of cars so we will pass a carId. *@
+                                <a class="btn btn-secondary" asp-page="../Services/History" asp-route-carId="@item.Id">
+                                    <i class="fas fa-wrench"></i> &nbsp; Service History
+                                </a>
+                            </td>
 
-                    @* Button group*@
-                    <td>
-                        <div class="btn-group" role="group">
+                            @* Only available to admin user *@
+                            @if(User.IsInRole(SD.AdminEndUser))
+                            {
+                                <td>
+                                    @* New service button
+                                       Navigate to a page in the services folder called history
+                                       We are iterating through a list of cars so we will pass a carId. *@
+                                    <a class="btn btn-success" asp-page="../Services/Create" asp-route-carId="@item.Id">
+                                        <i class="fas fa-plus"></i> &nbsp; New Service
+                                    </a>
+                                </td>
+                            }
 
-                            @* Passes the Id for that row in the DB. Search font awesome for edit *@
-                            <a class="btn btn-primary text-white" asp-page="Edit" asp-route-Id="@item.Id">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                            @* Button group*@
+                            <td>
+                                <div class="btn-group" role="group">
+
+                                    @* Passes the Id for that row in the DB. Search font awesome for edit *@
+                                    <a class="btn btn-primary text-white mr-2`" asp-page="Edit" asp-route-Id="@item.Id">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
                         
-                            @* Font awesome trash icon*@
-                            <a class="btn btn-danger text-white" asp-page="Delete" asp-route-Id="@item.Id">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
+                                    @* Font awesome trash icon*@
+                                    <a class="btn btn-danger text-white" asp-page="Delete" asp-route-Id="@item.Id">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
 
-                        </div>
-                    </td>
-                </tr>
+                                </div>
+                            </td>
+                        </tr>
                     }
 
                 </table>

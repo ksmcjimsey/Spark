@@ -485,3 +485,15 @@ D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razo
 D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\obj\Debug\netcoreapp3.1\Razor\Pages\Cars\Index.cshtml.g.cs
 D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\obj\Debug\netcoreapp3.1\Razor\Pages\Cars\Create.cshtml.g.cs
 D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\obj\Debug\netcoreapp3.1\Razor\Pages\Shared\_StatusMessage.cshtml.g.cs
+D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\obj\Debug\netcoreapp3.1\Razor\Pages\Users\Delete.cshtml.g.cs
+D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\obj\Debug\netcoreapp3.1\Razor\Pages\Cars\Edit.cshtml.g.cs
+D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\obj\Debug\netcoreapp3.1\Razor\Pages\Services\Create.cshtml.g.cs
+D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\bin\Debug\netcoreapp3.1\refs\Microsoft.Win32.Registry.dll
+D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\bin\Debug\netcoreapp3.1\refs\System.Diagnostics.EventLog.dll
+D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\bin\Debug\netcoreapp3.1\refs\System.IO.Pipelines.dll
+D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\bin\Debug\netcoreapp3.1\refs\System.Security.AccessControl.dll
+D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\bin\Debug\netcoreapp3.1\refs\System.Security.Cryptography.Cng.dll
+D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\bin\Debug\netcoreapp3.1\refs\System.Security.Cryptography.Xml.dll
+D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\bin\Debug\netcoreapp3.1\refs\System.Security.Permissions.dll
+D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\bin\Debug\netcoreapp3.1\refs\System.Security.Principal.Windows.dll
+D:\OneDrive - Johns Hopkins\4. CHP Studies\Udemy\2. Master ASP.Net Core 3.1 Razor Pages\My Projects\Spark\SparkAuto\SparkAuto\bin\Debug\netcoreapp3.1\refs\System.Windows.Extensions.dll
