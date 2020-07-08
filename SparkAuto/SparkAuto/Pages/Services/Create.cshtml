@@ -60,7 +60,10 @@
                             <div class="col-9 pb-1 pt-2">
                                 <div class="row">
                                     <div class="col-8">
-                                        @* Not sure about this code ?? *@
+                                        @* The asp-for assigns to the bound model so the backend can use it
+                                            The asp-items is what shows in the drop down list
+                                            The list is from the ServieType List passed in in the model.
+                                            Not sure what the Id and Name do?*@
                                         <select asp-for="CarServiceVM.ServiceDetails.ServiceTypeId"
                                                 asp-items="@(new SelectList(Model.CarServiceVM.ServiceTypeList, "Id", "Name"))"
                                                 class="form-control">
@@ -119,16 +122,57 @@
                                                 </td>
                                                 <td>
                                                     <button type="submit" class="btn btn-danger form-control"
-                                                            asp-page-handler="RemoveFromCart" asp-route-serviceId="@item.ServiceTypeId">
+                                                            asp-page-handler="RemoveFromCart" asp-route-serviceTypeId="@item.ServiceTypeId">
                                                         <i class="far fa-trash-alt"></i>
                                                     </button>
                                                 </td>
                                             </tr>
                                         }
 
+                                        @* Total price found at the bottom of the service list *@
+                                        <tr style="background-color:#e2fee2">
+                                            <td colspan="1">
+                                                <h6 class="text-success">Total Price :</h6>
+                                            </td>
+                                            @* Total price stored in the service header *@
+                                            <td colspan="2">
+                                                <h6 class="text-success">$@Model.CarServiceVM.ServiceHeader.TotalPrice</h6>
+                                            </td>
+                                        </tr>
+
                                     </table>
                                 </div>
-                                <div class="col-5">
+
+                                @* This is where the miles for the service are entered and details are inputed *@
+                                <div class="col-5 px-4 pb-2">
+
+                                    @* Put miles input in one row and details in another row and button in third row *@
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <label asp-for="CarServiceVM.ServiceHeader.Miles" class="form-control" style="border:none;"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="CarServiceVM.ServiceHeader.Miles" id="txtMiles" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row py-2">
+                                        <div class="col-12">
+                                            <textarea placeholder="Comments..." asp-for="CarServiceVM.ServiceHeader.Details"
+                                                      class="form-control" style="height:100px">
+                                        </textarea>
+                                        </div>
+                                    </div>
+
+                                    @* **** Calls JS script validateInput()*** *@
+                                    <div class="row p-0">
+                                        <div class="col-12">
+                                            <button class="btn btn-success form-control"
+                                                    onclick="return validateInput()">
+                                                Service Completed
+                                            </button>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -143,3 +187,29 @@
 </div>  @* Container *@
 
 
+@* How to add the CDN to a core 3 fron end web page / view
+    Create a section for scripts and pull in validation scripts *@
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    @* Add in CDN for JS scripts here - this one is for sweet alerts *@
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    @* Creating custom JS code *@
+    <script>
+        function validateInput() {
+            var miles = document.getElementById("txtMiles").value;
+
+            if (miles < 1) {
+                // alert("Miles must be greater then 0");
+                swal("Error!", "Miles must be greater then 0", "error");
+                return false;
+            }
+
+        }
+
+    </script>
+     
+
+}

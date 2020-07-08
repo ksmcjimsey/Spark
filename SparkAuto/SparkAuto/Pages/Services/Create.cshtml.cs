@@ -75,5 +75,100 @@ namespace SparkAuto.Pages.Services
             return Page();
 
         }
+
+
+        // Plain vanilla OnPost
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (ModelState.IsValid)
+            {
+                // Add the date to the service header adn fill the shopping cart
+                // with a list fo service types.
+                CarServiceVM.ServiceHeader.DateAdded = DateTime.Now;
+                CarServiceVM.ServiceShoppingCart =
+                    _db.ServiceShoppingCart.Include(c => c.ServiceType).ToList();
+
+                // Loop over cart to get the total price
+                foreach(var item in CarServiceVM.ServiceShoppingCart)
+                {
+                    CarServiceVM.ServiceHeader.TotalPrice += item.ServiceType.Price;
+                }
+
+                // Set the service header car Id to the models car ID.
+                CarServiceVM.ServiceHeader.CarId = CarServiceVM.Car.Id;
+
+                // Save changes on the service header to the DB
+                _db.ServiceHeader.Add(CarServiceVM.ServiceHeader);
+                await _db.SaveChangesAsync();
+
+                // Next loop over the details and set them in Service Details
+                foreach(var detail in CarServiceVM.ServiceShoppingCart)
+                {
+                    ServiceDetails serviceDetails = new ServiceDetails
+                    {
+                        ServiceHeaderId = CarServiceVM.ServiceHeader.Id,
+                        ServiceName = detail.ServiceType.Name,
+                        ServicePrice = detail.ServiceType.Price,
+                        ServiceTypeId = detail.ServiceTypeId
+                    };
+
+                    // Add serviceDetails to the DB
+                    // Don't call the save chagnes until after the loop is done!
+                    _db.ServiceDetails.Add(serviceDetails);
+                }
+
+                // Before we save remove all the items from the shopping cart
+                // *** Use RemoveRange to remove more then one item ***
+                // If passing a list all the records are removed based on primary key
+                _db.ServiceShoppingCart.RemoveRange(CarServiceVM.ServiceShoppingCart);
+
+                await _db.SaveChangesAsync();
+
+                return RedirectToPage("../Cars/Index", new { userId = CarServiceVM.Car.UserId });
+            }
+
+            // Model not valid
+            return Page();
+        }
+
+
+        // Added OnPost and then the value from the razor page button:
+        // asp-page-handler="AddToCart".  OnPost + AddToCart
+        public async Task<IActionResult> OnPostAddToCart()
+        {
+            // Service shopping cart consists fo a car id and a service type id
+            ServiceShoppingCart objServiceCart = new ServiceShoppingCart()
+            {
+                CarId = CarServiceVM.Car.Id,    // comes from front end hidden property
+                ServiceTypeId = CarServiceVM.ServiceDetails.ServiceTypeId  // Drop down list select is assined to this value
+            };
+
+            // Add the shopping card to the database ServiceShoppingCart table
+            _db.ServiceShoppingCart.Add(objServiceCart);
+            await _db.SaveChangesAsync();
+
+            // Back to the Services create 
+            return RedirectToPage("Create", new { carId = CarServiceVM.Car.Id });
+
+        }
+
+
+        // Remove an item from the cart
+        public async Task<IActionResult> OnPostRemoveFromCart(int serviceTypeId)
+        {
+            // Go to the DB and get me the item from the shopping cart for the car Id 
+            // in the bound model and the service type based on service type id.
+            ServiceShoppingCart objServiceCart =
+                _db.ServiceShoppingCart.FirstOrDefault(s => s.CarId == CarServiceVM.Car.Id 
+                    && s.ServiceTypeId == serviceTypeId);
+
+            // Add the shopping card to the database ServiceShoppingCart table
+            _db.ServiceShoppingCart.Remove(objServiceCart);
+            await _db.SaveChangesAsync();
+
+            // Back to the Services create for the specific car.
+            return RedirectToPage("Create", new { carId = CarServiceVM.Car.Id });
+
+        }
     }
 }

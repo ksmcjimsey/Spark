@@ -1,0 +1,98 @@
+﻿@page
+@model SparkAuto.Pages.Services.DetailsModel
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+
+<div class="container pt-4 pb-2 row">
+
+    <div class="col-6">
+        <h2 class="text-info py-2">Service Details</h2>
+    </div>
+    <div class="col-3 offset-3 text-right py-2">
+        <a asp-page="../Services/History" asp-route-carId="@Model.serviceHeader.CarId" 
+           class="btn btn-outline-success form-control">Back to List</a>
+    </div>
+</div>
+
+<div class="container background-white">
+    <div class="card">
+
+        <div class="card-header bg-dark text-light ml-0 row container">
+            <div class="col-1 text-center pt-3 text-white-50">
+                <i class="far fa-user fa-2x"></i>
+            </div>
+
+            @* Car.ApplicationUser is available because we used a .include in the controllor get method*@
+            <div class="col-5">
+                <label class="text-info">@Model.serviceHeader.Car.ApplicationUser.Name</label><br />
+                <label class="text-info">
+                    @Model.serviceHeader.Car.ApplicationUser.Email /
+                    @Model.serviceHeader.Car.ApplicationUser.PhoneNumber
+                </label><br />
+            </div>
+
+            <div class="col-5 text-right">
+                <label class="text-info">@Model.serviceHeader.Car.Make @Model.serviceHeader.Car.Model @Model.serviceHeader.Car.Style</label><br />
+                <label class="text-info">@Model.serviceHeader.Car.Year</label>
+            </div>
+
+            <div class="col-1 text-center pt-3 text-white-50">
+                <i class="fas fa-car fa-2x"></i>
+            </div>
+        </div>
+
+        @* When using label above we need the @Model but when using asp-for it assumes the @Model *@
+        <div class="card-body">
+            <div class="row pt-3">
+
+                <div class="col-7">
+
+                    <table class="table table-striped border">
+
+                        @* Header text *@
+                        <tr class="table-secondary">
+                            <th>
+                                @Html.DisplayNameFor(m => Model.serviceDetails[0].ServiceName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(m => Model.serviceDetails[0].ServicePrice)
+                            </th>
+                        </tr>
+
+                        @* Fill in the data*@
+                        @foreach (var item in Model.serviceDetails)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(m => item.ServiceName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.ServicePrice)
+                                </td>
+                            </tr>
+                        }
+
+                        @* Total price found at the bottom of the service list *@
+                        <tr style="background-color:#e2fee2">
+                            <td colspan="1">
+                                <h6 class="text-success">Total Price :</h6>
+                            </td>
+                            @* Total price stored in the service header *@
+                            <td colspan="2">
+                                <h6 class="text-success">$@Model.CarServiceVM.ServiceHeader.TotalPrice</h6>
+                            </td>
+                        </tr>
+
+                    </table>
+                    
+                </div>
+
+            </div>
+        </div>
+
+    </div>  @* Card *@
+</div>  @* Container *@
+

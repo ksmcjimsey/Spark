@@ -80,6 +80,7 @@ namespace SparkAuto.Pages.Cars
                 await _db.SaveChangesAsync();
             }
 
+            // This is where the magic is that gets to the correct page
             return Redirect("/Cars?userId=" + Car.UserId);
         }
 
